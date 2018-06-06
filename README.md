@@ -11,10 +11,15 @@ Sphero NodeJS control server
 ### Mac
 * TBD
 
-## Installation
-1. Clone repo
-2. `npm install`
+## Build setup
+``` bash
+# clone the project
+$ git clone https://github.com/wesselperik/ACT-Sphero
 
-## Execution
-&nbsp;&nbsp;&nbsp;&nbsp;`npm run --os [OS]`<br />
-&nbsp;&nbsp;&nbsp;&nbsp;Available Operating Systems: **linux**, **mac**
+# install dependencies
+$ npm install
+
+# run according to your operating system
+$ npm run linux
+$ npm run mac
+```
