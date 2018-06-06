@@ -2,6 +2,7 @@ var sphero = require("orbie");
 var keypress = require("keypress");
 
 var hasOSparameter = false;
+var isCalibrating = false;
 var orb = undefined;
 
 process.argv.forEach(function (val, index, array) {
@@ -38,11 +39,14 @@ function handle(ch, key) {
     }
   
     if (key.name === "e") {
+        isCalibrating = true;
         orb.startCalibration();
     }
   
     if (key.name === "q") {
-        orb.finishCalibration();
+        if (isCalibrating) orb.finishCalibration();
+        isCalibrating = false;
+        orb.color("green");
     }
   
     if (key.name === "up") {
