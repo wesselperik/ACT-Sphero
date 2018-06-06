@@ -1,5 +1,9 @@
 var sphero = require("orbie");
 var keypress = require("keypress");
+var express = require("express");
+var bodyParser = require("body-parser");
+var routes = require("./routes/routes.js");
+var app = express();
 
 var hasOSparameter = false;
 var isCalibrating = false;
@@ -28,6 +32,11 @@ if (orb == undefined) {
     console.log("ERROR: No valid OS specified!");
     process.exit();
 }
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+routes(app);
 
 function handle(ch, key) {
     var stop = orb.roll.bind(orb, 0, 0),
@@ -72,6 +81,11 @@ function handle(ch, key) {
   
 function listen() {
     orb.color("green");
+
+    var server = app.listen(3000, function () {
+        console.log("app running on port.", server.address().port);
+    });
+  
     keypress(process.stdin);
     process.stdin.on("keypress", handle);
   
@@ -79,6 +93,18 @@ function listen() {
   
     process.stdin.setRawMode(true);
     process.stdin.resume();
+
+    orb.detectFreefall();
+
+    orb.on("freefall", function(data) {
+        console.log("freefall detected");
+        console.log("  data:", data);
+    });
+
+    orb.on("landed", function(data) {
+        console.log("landing detected");
+        console.log("  data:", data);
+    });
 }
   
 orb.connect(listen);
