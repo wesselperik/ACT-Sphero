@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "mac": "node app.js --os mac",
-    "linux": "node app.js --os linux",
+    "linux": "rfcomm bind 0 68:86:E7:09:F4:70; node app.js --os linux",
     "windows": "node app.js --os windows"
   },
   "repository": {

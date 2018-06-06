@@ -12,7 +12,7 @@ process.argv.forEach(function (val, index, array) {
     if (index == 3 && val == "mac") {
         orb = sphero("/dev/tty.Sphero-OPR-AMP-SPP");
     } else if (index == 3 && val == "linux") {
-        orb = sphero("/dev/tty.Sphero-OPR-AMP-SPP"); // TODO: define Linux port
+        orb = sphero("/dev/rfcomm0"); // TODO: define Linux port
     } else if (index == 3 && val == "windows") {
         orb = sphero("/dev/tty.Sphero-OPR-AMP-SPP"); // TODO: define Windows port
     }
