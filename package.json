@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/wesselperik/ACT-Sphero#readme",
   "dependencies": {
+    "keypress": "^0.2.1",
     "orbie": "^0.1.0",
     "serialport": "^6.2.0"
   }
