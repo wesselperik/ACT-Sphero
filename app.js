@@ -28,6 +28,32 @@ if (orb == undefined) {
     process.exit();
 }
 
+var stdin = process.stdin;
+stdin.setRawMode(true);
+stdin.resume();
+stdin.setEncoding('utf8');
+
+stdin.on('data', function(key){
+    if (key == '\u001B\u005B\u0041') {
+        console.log("ORB: rolling forward");
+        orb.roll(50, 0);
+    }
+    if (key == '\u001B\u005B\u0043') {
+        console.log("ORB: rolling right");
+        orb.roll(50, 90);
+    }
+    if (key == '\u001B\u005B\u0042') {
+        console.log("ORB: rolling backward");
+        orb.roll(50, 180);
+    }
+    if (key == '\u001B\u005B\u0044') {
+        console.log("ORB: rolling left");
+        orb.roll(50, 270);
+    }
+
+    if (key == '\u0003') { process.exit(); }    // ctrl-c
+});
+
 console.log("Connecting to sphero...");
 orb.connect(function() {
     console.log("Connected!");
