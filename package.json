@@ -1,0 +1,30 @@
+{
+  "name": "act-sphero",
+  "version": "1.0.0",
+  "description": "ACT Sphero project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mac": "node app.js --os mac",
+    "linux": "node app.js --os linux",
+    "windows": "node app.js --os windows"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wesselperik/ACT-Sphero.git"
+  },
+  "keywords": [
+    "sphero",
+    "node"
+  ],
+  "author": "Wessel Perik/Thymo van Beers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wesselperik/ACT-Sphero/issues"
+  },
+  "homepage": "https://github.com/wesselperik/ACT-Sphero#readme",
+  "dependencies": {
+    "orbie": "^0.1.0",
+    "serialport": "^6.2.0"
+  }
+}
