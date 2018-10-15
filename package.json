@@ -2,12 +2,14 @@
   "name": "act-sphero",
   "version": "1.0.0",
   "description": "ACT Sphero project",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mac": "node app.js --os mac",
-    "linux": "rfcomm bind 0 68:86:E7:09:F4:70; node app.js --os linux",
-    "windows": "node app.js --os windows"
+    "mac": "concurrently --kill-others \"npm run mac-server\" \"npm run mac-client\"",
+    "mac-server": "node server.js --os mac",
+    "mac-client": "node client/client.js",
+    "linux": "rfcomm bind 0 68:86:E7:09:F4:70; node server.js --os linux && node client/client.js",
+    "windows": "node server.js --os windows && node client/client.js"
   },
   "repository": {
     "type": "git",
@@ -25,9 +27,11 @@
   "homepage": "https://github.com/wesselperik/ACT-Sphero#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "concurrently": "^4.0.1",
     "express": "^4.16.3",
-    "keypress": "^0.2.1",
     "orbie": "^0.1.0",
-    "serialport": "^6.2.0"
+    "serialport": "^6.2.0",
+    "ws": "^6.1.0"
   }
 }

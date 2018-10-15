@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>ACT-Sphero Web client</title>
+    </head>
+    <body>
+        <h1>
+            ACT-Sphero Web client
+        </h1>
+        <p>
+            Use WASD to control Sphero.<br>
+            Open the console to see connection messages.<br><br>
+        </p>
+        <p>
+            &copy; 2018 Wessel Perik
+        </p>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script>
+            var ws = new WebSocket('ws://localhost:40510');
+            ws.onopen = function () {
+                console.log('websocket is connected ...')
+                // ws.send('connected')
+            }
+            ws.onmessage = function (ev) {
+                if (ev.data) console.log(ev);
+            }
+            $(this).on('keypress', function(event) {
+                if (ws.readyState === ws.OPEN){
+                    if (event.key == 'w') {
+                        ws.send('{"key": "w"}');
+                    } else if (event.key == 'a') {
+                        ws.send('{"key": "a"}');
+                    } else if (event.key == 's') {
+                        ws.send('{"key": "s"}');
+                    } else if (event.key == 'd') {
+                        ws.send('{"key": "d"}');
+                    }
+                }
+            });
+
+        </script>
+    </body>
+</html>
