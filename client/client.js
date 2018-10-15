@@ -5,6 +5,7 @@
  * This class serves the web-interface for the client.
  * 
  * @author Wessel Perik
+ * @author Thymo van Beers
  * @license MIT
  */
 

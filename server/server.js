@@ -8,19 +8,28 @@
  * Sphero will roll in the given direction.
  * 
  * @author Wessel Perik
+ * @author Thymo van Beers
  * @license MIT
  */
 
- var sphero = require("orbie");
-var ws = require("ws");
-var chalk = require("chalk");
+// Load external libraries
+const sphero = require("orbie");
+const ws = require("ws");
+const chalk = require("chalk");
 
+// Load local libraries
+const Utils = require("./utils");
+const LogType = require("./logtypes");
+
+// Variables
 var hasOSparameter = false;
 var orb = undefined;
 var socketServer = ws.Server;
 var socket = new socketServer({port: 40510})
+var utils = new Utils();
 
 process.argv.forEach(function (val, index, array) {
+    // Read program start flags
     if (index == 2 && val == "--os") {
         hasOSparameter = true;
     }
@@ -35,26 +44,28 @@ process.argv.forEach(function (val, index, array) {
 });
 
 if (!hasOSparameter) {
-    console.log("ERROR: No OS parameter specified!");
+    utils.log(LogType.ERROR, "No OS parameter specified!");
     process.exit();
 }
 
 if (orb == undefined) {
-    console.log("ERROR: No valid OS specified!");
+    utils.log(LogType.ERROR, "No valid OS specified!");
     process.exit();
 }
 
+// Connect with Sphero
+utils.log(LogType.INFO, "Starting ACT-Sphero server...");
 orb.connect(listen);
   
 function listen() {
-    console.log(chalk.bgCyan.black.bold(" INFO ") + " ACT-Sphero server started.");
+    utils.log(LogType.SUCCESS, "ACT-Sphero server started.");
 
     // Bind stop and roll functions
     var stop = orb.roll.bind(orb, 0, 0), roll = orb.roll.bind(orb, 60);
 
     // Wait for a client to connect to the WebSocket
     socket.on('connection', function (ws) {
-        console.log(chalk.bgGreen.black.bold(" SUCCESS ") + " Web client connected!");
+        utils.log(LogType.INFO, "Web client connected.");
 
         // Send a packet each second to keep the WebSocket open
         setInterval(() => ws.send(""), 1000);
@@ -67,19 +78,19 @@ function listen() {
 
         orb.on("freefall", function(data) {
             // Send freefall event message
-            console.log(chalk.bgCyan.black.bold(" INFO ") + " Freefall detected.");
+            utils.log(LogType.INFO, "Freefall detected.");
             ws.send(JSON.stringify({"event": "freefall"}));
         });
 
         orb.on("landed", function(data) {
             // Send landing event message
-            console.log(chalk.bgCyan.black.bold(" INFO ") + " Landing detected.");
+            utils.log(LogType.INFO, "Landing detected.");
             ws.send(JSON.stringify({"event": "landing"}));
         });
 
         // Handle messages received from the client
         ws.on('message', function (message) {
-          console.log(chalk.bgYellow.black.bold(" MESSAGE ") + " %s", message);
+          // utils.log(LogType.INFO, message);
 
           var key = JSON.parse(message).key;
           if (key == "w") {
