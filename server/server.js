@@ -15,11 +15,10 @@
 // Load external libraries
 const sphero = require("orbie");
 const ws = require("ws");
-const chalk = require("chalk");
 
 // Load local libraries
-const Utils = require("./utils");
-const LogType = require("./logtypes");
+const Utils = require("../common/utils");
+const LogType = require("../common/logtypes");
 
 // Variables
 var hasOSparameter = false;
@@ -64,8 +63,8 @@ function listen() {
     var stop = orb.roll.bind(orb, 0, 0), roll = orb.roll.bind(orb, 60);
 
     // Wait for a client to connect to the WebSocket
-    socket.on('connection', function (ws) {
-        utils.log(LogType.INFO, "Web client connected.");
+    socket.on('connection', (ws, req) => {
+        utils.log(LogType.INFO, "Web client with IP address " + req.connection.remoteAddress + " connected.");
 
         // Send a packet each second to keep the WebSocket open
         setInterval(() => ws.send(""), 1000);

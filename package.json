@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "mac": "concurrently --kill-others \"npm run mac-server\" \"npm run mac-client\"",
     "mac-server": "node server/server.js --os mac",
-    "mac-client": "node client/client.js",
+    "mac-client": "cd client/ && npm run dev",
     "linux": "rfcomm bind 0 68:86:E7:09:F4:70; node server/server.js --os linux && node client/client.js",
     "windows": "node server/server.js --os windows && node client/client.js"
   },
