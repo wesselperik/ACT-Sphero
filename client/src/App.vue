@@ -11,7 +11,7 @@
       <v-layout row pb-2 style="margin-top: -55px;">
         <v-flex xs12 md10 lg8 offset-xs0 offset-md1 offset-lg2>
           <v-card class="card--flex-toolbar">
-            <p class="hint">Use WASD to control Sphero</p>
+            <p class="hint">Use WASD or click the arrows below to control Sphero!</p>
             <table>
               <tbody>
                 <tr>
@@ -97,8 +97,7 @@ export default {
       this.socket.onmessage = (message) => {
         // check if message contains data
         if (JSON.parse(message.data).key) {
-          // message contains data. Check the type of data
-          //this.messages += JSON.parse(message.data).key + "\n";
+          // message contains direction data.
           if (JSON.parse(message.data).key == "w") {
             this.w = true;
             this.a = false;
