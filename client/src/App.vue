@@ -37,8 +37,8 @@
 
       <v-footer height="auto">
         <v-layout justify-center row wrap>
-          <v-btn flat round :href="'https://github.com/weselperik/ACT-Sphero'">Project on GitHub</v-btn>
-          <v-flex py-3 text-xs-center xs12>&copy; 2018 Wessel Perik & Thymo van Beers</v-flex>
+          <v-flex text-xs-center xs12 class="logo-box"><a href="https://saxion.nl" target="_blank"><img class="footer-logo" src="./assets/saxion-logo.png" /></a><a href="https://sphero.com" target="_blank"><img class="footer-logo" src="./assets/sphero-logo.png" /></a></v-flex>
+          <v-flex py-3 text-xs-center xs12><v-btn flat round :href="'https://github.com/weselperik/ACT-Sphero'">Project on GitHub</v-btn> &copy; 2018 Wessel Perik & Thymo van Beers</v-flex>
         </v-layout>
       </v-footer>
 
@@ -160,7 +160,18 @@ export default {
     top: auto;
     position: absolute;
     width: 100vw;
+    font-weight: 700;
   }
+
+  footer .logo-box {
+    padding-top: 25px;
+  }
+
+  footer img.footer-logo {
+    height: 50px;
+    padding: 0px 10px;
+  }
+
   .alert-box {
     position: fixed;
     top: auto;
