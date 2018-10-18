@@ -211,11 +211,11 @@ export default {
   }
 
   table button {
-    width: 15vw !important;
-    height: 15vw !important;
+    width: 15vh !important;
+    height: 15vh !important;
   }
 
   table button i {
-    font-size: 5vw !important;
+    font-size: 5vh !important;
   }
 </style>
