@@ -34,9 +34,9 @@ process.argv.forEach(function (val, index, array) {
     }
 
     if (index == 3 && val == "mac") {
-        orb = sphero("/dev/tty.Sphero-OPR-AMP-SPP");
+        orb = sphero("/dev/tty.Sphero-OPR-AMP-SPP", { emitPacketErrors: true });
     } else if (index == 3 && val == "linux") {
-        orb = sphero("/dev/rfcomm0");
+        orb = sphero("/dev/rfcomm0", { emitPacketErrors: true });
     } else if (index == 3 && val == "windows") {
         orb = sphero(""); // TODO: define Windows port
     }
@@ -61,13 +61,13 @@ function listen() {
 
     // Bind stop and roll functions
     var stop = orb.roll.bind(orb, 0, 0), roll = orb.roll.bind(orb, 60);
-
+    
     // Wait for a client to connect to the WebSocket
     socket.on('connection', (ws, req) => {
         utils.log(LogType.INFO, "Web client with IP address " + req.connection.remoteAddress + " connected.");
 
         // Send a packet each second to keep the WebSocket open
-        setInterval(() => ws.send(""), 1000);
+        setInterval(() => ws.send(JSON.stringify({"keepalive": true})), 1000);
         
         // Change the orb's color to green
         orb.color("green");
@@ -75,16 +75,22 @@ function listen() {
         // Detect freefall and landing events
         orb.detectFreefall();
 
+        // Error handling
+        orb.on("error", function(err, data) {
+            utils.log(LogType.ERROR, err);
+            utils.log(LogType.ERROR, data);
+        });
+
         orb.on("freefall", function(data) {
             // Send freefall event message
-            utils.log(LogType.INFO, "Freefall detected.");
-            ws.send(JSON.stringify({"event": "freefall"}));
+            // utils.log(LogType.INFO, "Freefall detected.");
+            // ws.send(JSON.stringify({"event": "freefall"}));
         });
 
         orb.on("landed", function(data) {
             // Send landing event message
-            utils.log(LogType.INFO, "Landing detected.");
-            ws.send(JSON.stringify({"event": "landing"}));
+            // utils.log(LogType.INFO, "Landing detected.");
+            // ws.send(JSON.stringify({"event": "landing"}));
         });
 
         // Handle messages received from the client
@@ -104,7 +110,7 @@ function listen() {
             roll(270);
           }
     
-          if (key ==="d") {
+          if (key == "d") {
             roll(90);
           }
 

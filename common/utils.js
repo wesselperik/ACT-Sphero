@@ -9,8 +9,8 @@
  * @license MIT
  */
 
-var chalk = require("chalk");
-var LogType = require("./logtypes");
+const chalk = require("chalk");
+const LogType = require("./logtypes");
 
 module.exports = class Utils {
     constructor() {

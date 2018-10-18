@@ -11,9 +11,26 @@
       <v-layout row pb-2 style="margin-top: -55px;">
         <v-flex xs12 md10 lg8 offset-xs0 offset-md1 offset-lg2>
           <v-card class="card--flex-toolbar">
-            <p>Use WASD to control Sphero.<br>
-            Open the console to see connection messages.</p>
-            <p>{{ messages }}</p>
+            <p class="hint">Use WASD to control Sphero</p>
+            <table>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td><v-btn v-bind:class="{ 'primary': w }" @click="roll('w')"><v-icon>arrow_upward</v-icon></v-btn></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><v-btn v-bind:class="{ 'primary': a }" @click="roll('a')"><v-icon>arrow_back</v-icon></v-btn></td>
+                  <td></td>
+                  <td><v-btn v-bind:class="{ 'primary': d }" @click="roll('d')"><v-icon>arrow_forward</v-icon></v-btn></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><v-btn v-bind:class="{ 'primary': s }" @click="roll('s')"><v-icon>arrow_downward</v-icon></v-btn></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
           </v-card>
         </v-flex>
       </v-layout>
@@ -43,7 +60,10 @@ export default {
     return {
       socket: null,
       socketConnected: false,
-      messages: "",
+      w: false,
+      a: false,
+      s: false,
+      d: false,
       alerts: []
     }
   },
@@ -78,28 +98,58 @@ export default {
         // check if message contains data
         if (JSON.parse(message.data).key) {
           // message contains data. Check the type of data
-          this.messages += JSON.parse(message.data).key + "\n";
+          //this.messages += JSON.parse(message.data).key + "\n";
+          if (JSON.parse(message.data).key == "w") {
+            this.w = true;
+            this.a = false;
+            this.s = false;
+            this.d = false;
+            setTimeout(() => { this.w = false; }, 3000);
+          } else if (JSON.parse(message.data).key == "a") {
+            this.a = true;
+            this.w = false;
+            this.s = false;
+            this.d = false;
+            setTimeout(() => { this.a = false; }, 3000);
+          } else if (JSON.parse(message.data).key == "s") {
+            this.s = true;
+            this.w = false;
+            this.a = false;
+            this.d = false;
+            setTimeout(() => { this.s = false; }, 3000);
+           } else if (JSON.parse(message.data).key == "d") {
+            this.d = true;
+            this.w = false;
+            this.a = false;
+            this.s = false;
+            setTimeout(() => { this.d = false; }, 3000);
+          }
         }
       }
     },
     addKeyListener() {
       window.addEventListener("keypress", event => {
-        if (this.socket.readyState === this.socket.OPEN){
-          if (event.key == 'w') {
-            this.socket.send('{"key": "w"}');
-          } else if (event.key == 'a') {
-            this.socket.send('{"key": "a"}');
-          } else if (event.key == 's') {
-            this.socket.send('{"key": "s"}');
-          } else if (event.key == 'd') {
-            this.socket.send('{"key": "d"}');
-          }
+        if (event.key){
+          this.roll(event.key);
         }
       });
     },
     addAlert(data) {
       var index = this.alerts.push(data) - 1;
       setTimeout(() => { this.alerts[index].show = false }, 4000);
+    },
+    roll(key) {
+      if (this.socket.readyState === this.socket.OPEN) {
+        if (key == 'w') {
+          this.socket.send('{"key": "w"}');
+        } else if (key == 'a') {
+          this.socket.send('{"key": "a"}');
+        } else if (key == 's') {
+          this.socket.send('{"key": "s"}');
+        } else if (key == 'd') {
+          this.socket.send('{"key": "d"}');
+        }
+      }
     }
   }
 }
@@ -137,5 +187,25 @@ export default {
 
   .v-card {
     padding: 30px;
+  }
+
+  p.hint {
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  table {
+    margin: auto;
+  }
+
+  table button {
+    width: 15vw !important;
+    height: 15vw !important;
+  }
+
+  table button i {
+    font-size: 5vw !important;
   }
 </style>
