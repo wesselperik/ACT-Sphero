@@ -19,9 +19,6 @@ module.exports = class Utils {
 
     log(type, message) {
         switch(type) {
-            case LogType.INFO:
-                console.log(chalk.bgCyan.black.bold(" INFO ") + " " + message);
-                break;
             case LogType.WARNING:
                 console.log(chalk.bgYellow.black.bold(" WARNING ") + " " + message);
                 break;
@@ -31,6 +28,7 @@ module.exports = class Utils {
             case LogType.ERROR:
                 console.log(chalk.bgRed.black.bold(" ERROR ") + " " + message);
                 break;
+            case LogType.INFO:
             default:
                 console.log(chalk.bgCyan.black.bold(" INFO ") + " " + message);
         }
